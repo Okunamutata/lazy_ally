@@ -10,9 +10,8 @@ import 'package:lazy_ally/src/lazy_ally_controller.dart';
 /// Every LazyAlly widget defaults to `const LazyAllyLabels()` (English) but
 /// accepts a `labels: LazyAllyLabels` override, so a non-English app can
 /// supply its own copy — from `AppLocalizations`, an ARB-generated class,
-/// or anywhere else — without LazyAlly needing to know anything about
-/// `Locale`, `intl`, or `flutter gen-l10n` itself: it's a plain data class,
-/// not a localization framework. Build one from your own localizations and
+/// or anywhere else.
+/// Build one from your own localizations and
 /// pass it to [LazyAllyPanel] (which forwards it to every control it
 /// renders) or to an atomic widget directly:
 ///

@@ -130,16 +130,34 @@ translatable — behind one button. Full runnable version: [`example/`](example/
 import 'package:flutter/material.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
-void main() => runApp(
-      LazyAlly(
-        light: myLightTheme,
-        dark: myDarkTheme,
-        // Optional — everything below has a reasonable default.
-        textScaleMin: 0.85,
-        textScaleMax: 1.6,
-        child: const MyApp(),
-      ),
-    );
+Future<void> main() async {
+  // Prefetch before runApp so loadLazyAllyPreferences below can return an
+  // already-known value instead of a Future — LazyAlly then applies it in
+  // initState, before the first frame, with no flash of constructor defaults.
+  final LazyAllyPreferences? cachedPrefs = await readCachedLazyAllyPreferences();
+
+  runApp(
+    LazyAlly(
+      light: myLightTheme,
+      dark: myDarkTheme,
+      // Optional — everything below has a reasonable default.
+      colorBlindScheme: (light: /* ... */, dark: /* ... */),
+      customColorSchemes: <String, LazyAllyColorSchemePair>{ /* ... */ },
+      initialCustomScheme: 'pride',
+      customThemes: <String, LazyAllyThemePair>{ /* ... */ },
+      initialCustomTheme: 'mango',
+      textScaleMin: 0.85,
+      textScaleMax: 1.6,
+      textScaleDefault: 1.0,
+      initialMode: kLazyAllySystem,
+      initialColorBlind: false,
+      initiallyDisableAnimation: false,
+      loadLazyAllyPreferences: () => cachedPrefs,
+      onLazyAllyPreferencesChanged: (prefs) => /* ... */,
+      child: const MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

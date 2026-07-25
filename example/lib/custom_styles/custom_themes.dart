@@ -20,8 +20,7 @@ exampleCustomThemes = <String, LazyAllyThemePair>{
 /// Builds a light+dark [LazyAllyThemePair] from one seed color and one
 /// corner radius, applied to cards/buttons/chips — a stand-in for the kind
 /// of full brand identity (typography, shapes, component themes) a real app
-/// would vary here, without this example needing to bundle extra font
-/// assets to prove the point.
+/// would vary here.
 LazyAllyThemePair _fruitTheme({
   required Color seedColor,
   required double cornerRadius,

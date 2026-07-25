@@ -204,9 +204,7 @@ class _LazyAllyState extends State<LazyAlly> {
     // Only the null <-> non-null transition matters here: _notifyCacheChanged
     // always reads widget.onLazyAllyPreferencesChanged fresh, so swapping one
     // non-null callback for another non-null callback needs no listener
-    // change. Without this, a caller that supplies the callback only once
-    // some async dependency becomes ready (null on first build, non-null
-    // later) would have its persistence listeners silently never attached.
+    // change.
     _syncPersistenceListening();
   }
 
