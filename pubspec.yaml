@@ -8,7 +8,8 @@ topics:
   - accessibility
   - a11y
   - theme
-  - colorblind
+  - color
+  - animation
 
 environment:
   sdk: ^3.12.0

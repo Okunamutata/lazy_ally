@@ -656,24 +656,33 @@ void main() {
       expect(notified, 0);
     });
 
-    test('seedReduceMotion applies once, mirroring seedFromSystemTextScale', () {
-      final LazyAllyController c = LazyAllyController(light: light, dark: dark);
-      c.seedReduceMotion(true);
-      expect(c.reduceMotion, isTrue);
+    test(
+      'seedReduceMotion applies once, mirroring seedFromSystemTextScale',
+      () {
+        final LazyAllyController c = LazyAllyController(
+          light: light,
+          dark: dark,
+        );
+        c.seedReduceMotion(true);
+        expect(c.reduceMotion, isTrue);
 
-      // A second seed call must not override a value the user (or a cache
-      // restore) may have since set.
-      c.setReduceMotion(false);
-      c.seedReduceMotion(true);
-      expect(c.reduceMotion, isFalse);
-    });
+        // A second seed call must not override a value the user (or a cache
+        // restore) may have since set.
+        c.setReduceMotion(false);
+        c.seedReduceMotion(true);
+        expect(c.reduceMotion, isFalse);
+      },
+    );
 
     test(
       'applyCache marks reduceMotion as already seeded, so a later OS seed '
       'does not clobber the restored value — regression coverage for the '
       'restored preference being overwritten by LazyAlly.didChangeDependencies',
       () {
-        final LazyAllyController c = LazyAllyController(light: light, dark: dark);
+        final LazyAllyController c = LazyAllyController(
+          light: light,
+          dark: dark,
+        );
         c.applyCache(
           const LazyAllyPreferences(
             mode: kLazyAllyLight,

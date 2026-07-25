@@ -32,3 +32,10 @@ Makefile
 # needed).
 example/android/
 example/ios/
+
+# README-only media. pub.dev renders README.md's relative image links
+# straight from the repository (via pubspec.yaml's `repository:` field), so
+# these never need to ship inside the published package archive itself —
+# doing so would just bloat every `pub get` for no benefit. demo.gif in
+# particular is ~13 MB; keep it out of the tarball.
+assets/demo.gif

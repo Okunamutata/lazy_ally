@@ -1,4 +1,4 @@
-![lazy_ally banner](doc/banner.png)
+![lazy_ally banner](assets/banner.png)
 
 # 🍊 lazy_ally
 
@@ -34,6 +34,8 @@ reduce-motion, and screen-reader announcements — done for you, in stock Flutte
 - **Pluggable persistence** — bring your own storage via plain `loadLazyAllyPreferences`/
   `onLazyAllyPreferencesChanged` hooks, with a documented zero-flash startup pattern.
 - **Well tested** — 44 package tests + 16 example/widget tests, enforced in CI on every push.
+
+![lazy_ally demo](assets/demo.gif)
 
 ---
 
@@ -290,7 +292,7 @@ rather than competing.
 - **General inquiries:** [lazyfruit.dev](https://lazyfruit.dev)
 - **Email:** [lazy.ally.reprise769@passmail.net](mailto:lazy.ally.reprise769@passmail.net)
 
-<img src="doc/lazyfruit-logo.png" width="20" alt="" align="absmiddle"> Maintained by **LazyFruit** — a public-interest Flutter studio.
+<img src="assets/lazyfruit-logo.png" width="20" alt="" align="absmiddle"> Maintained by **LazyFruit** — a public-interest Flutter studio.
 
 ---
 
