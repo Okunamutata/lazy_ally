@@ -1,5 +1,5 @@
 name: lazy_ally
-description: "Wrap your app in a LazyAlly widget for light/dark/extra-dark theming, Okabe-Ito color-blind support by default, and sane text-scale limits — stock Flutter tooling only."
+description: "The lazy way to make your Flutter app accessible: system-aware theming, Okabe-Ito color-blind support, reduce-motion, and screen-reader announcements — stock Flutter only."
 version: 0.1.0-dev.1
 homepage: https://github.com/okunamutata/lazy_ally
 repository: https://github.com/okunamutata/lazy_ally
@@ -19,10 +19,9 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

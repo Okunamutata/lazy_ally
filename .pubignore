@@ -1,0 +1,34 @@
+# Files that are fine to keep in git but shouldn't ship in the published
+# package archive.
+#
+# .pubignore follows .gitignore syntax; unlike .gitignore, listing a file
+# here does NOT hide it from git, only from `dart pub publish`. Note:
+# creating this file means `dart pub publish` stops also deferring to
+# .gitignore automatically — so this list is written to stand on its own
+# (build artifacts and editor files included), not just as additions.
+
+# Build/tool artifacts — should never be tracked, but listed explicitly
+# since .pubignore's presence means .gitignore is no longer consulted too.
+build/
+example/build/
+.dart_tool/
+example/.dart_tool/
+.idea/
+*.iml
+.DS_Store
+
+# Libraries shouldn't ship their own lockfile — consumers resolve their own.
+/pubspec.lock
+
+# Maintainer-only docs/tooling — irrelevant to package consumers.
+PUBLISHING.md
+Makefile
+
+# The example app's native runner scaffolding (Gradle/Xcode projects, app
+# icons, plists, ...) — pub.dev only needs example/lib, example/pubspec.yaml,
+# and example/test to demonstrate real usage; the platform projects are
+# noise on the package page and don't affect `flutter run` from within
+# example/ (Flutter regenerates them from `flutter create .` if ever
+# needed).
+example/android/
+example/ios/

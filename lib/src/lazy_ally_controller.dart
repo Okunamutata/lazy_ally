@@ -1,14 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'okabe_ito.dart';
+import 'package:lazy_ally/src/domain/lazy_ally_preferences.dart';
+import 'package:lazy_ally/src/colors/okabe_ito.dart';
 
-/// Well-known brightness-mode identifiers understood by [LazyAllyController]
-/// out of the box. Modeled as [String]s (not a closed `enum`) so a future
-/// custom-theme registry (planned) can add arbitrary named modes without a
-/// breaking change to this API.
+part 'controller/lazy_ally_controller_brightness.dart';
+part 'controller/lazy_ally_controller_color_blind.dart';
+part 'controller/lazy_ally_controller_custom_schemes.dart';
+part 'controller/lazy_ally_controller_custom_themes.dart';
+part 'controller/lazy_ally_controller_reduce_motion.dart';
+part 'controller/lazy_ally_controller_text_scale.dart';
+
+// region Modes
+/// [LazyAllyController.mode] values. Just these three — for a variant like
+/// "extra dark", register a named [LazyAllyController.customThemes] entry
+/// instead.
 const String kLazyAllyLight = 'light';
 const String kLazyAllyDark = 'dark';
-const String kLazyAllyExtraDark = 'extraDark';
+
+/// Follows the OS's own brightness live. The default [LazyAllyController.mode].
+const String kLazyAllySystem = 'system';
+// endregion
+
+// region Theme pair typedefs
+/// A light/dark [ColorScheme] pair. [LazyAllyController] always resolves to
+/// whichever member matches the active brightness — supplying a correct
+/// pair per brightness is the caller's responsibility.
+typedef LazyAllyColorSchemePair = ({ColorScheme light, ColorScheme dark});
+
+/// A light/dark full [ThemeData] pair. Unlike [LazyAllyColorSchemePair]
+/// (which swaps only [ThemeData.colorScheme]), a selected pair *is* the
+/// base theme.
+typedef LazyAllyThemePair = ({ThemeData light, ThemeData dark});
+// endregion
 
 double _clampD(double value, double lo, double hi) {
   if (value < lo) return lo;
@@ -16,24 +40,31 @@ double _clampD(double value, double lo, double hi) {
   return value;
 }
 
-/// Holds the current LazyAlly theme selection, color-blind flag, and text
-/// scale factor, and notifies listeners on change.
+// region LazyAllyController
+/// Holds LazyAlly's theme selection, color-blind flag, and text-scale
+/// state, and notifies listeners on change.
 ///
-/// Color-blind mode is deliberately **orthogonal** to brightness mode (a
-/// [bool], not a fourth mode) — a color-blind user still has a light/dark
-/// preference. It's also scoped to *semantic/data colors only* via
-/// [cvdSafeColor]; it does not remap [ThemeData]'s neutral surfaces, which
-/// are already contrast- rather than hue-driven.
-class LazyAllyController extends ChangeNotifier {
+/// Split across `lazy_ally_controller_*.dart` part files by concern
+/// (brightness, color-blind, custom schemes/themes, text scale, reduce
+/// motion) — still one class, one library, one set of instance state.
+class LazyAllyController extends ChangeNotifier
+    with
+        _BrightnessMixin,
+        _ColorBlindMixin,
+        _CustomSchemesMixin,
+        _CustomThemesMixin,
+        _TextScaleMixin,
+        _ReduceMotionMixin {
   LazyAllyController({
     required this.light,
     required this.dark,
-    this.extraDark,
-    // Kept as a plain parameter, not `this._colorBlindPalette` (see the
-    // ignore below): a named initializing formal would rename the public
-    // argument label itself to the private field name, making
-    // `colorBlindPalette:` uncallable from outside this library.
-    List<Color> colorBlindPalette = kOkabeItoPalette,
+    LazyAllyColorSchemePair? colorBlindScheme,
+    Map<String, LazyAllyColorSchemePair> customColorSchemes =
+        const <String, LazyAllyColorSchemePair>{},
+    String? initialCustomScheme,
+    Map<String, LazyAllyThemePair> customThemes =
+        const <String, LazyAllyThemePair>{},
+    String? initialCustomTheme,
     double textScaleMin = 0.85,
     double textScaleMax = 1.6,
     double? textScaleDefault,
@@ -42,103 +73,94 @@ class LazyAllyController extends ChangeNotifier {
   }) : assert(
          textScaleMin <= textScaleMax,
          'textScaleMin ($textScaleMin) must be <= textScaleMax ($textScaleMax)',
-       ),
-       // ignore: prefer_initializing_formals
-       _colorBlindPalette = colorBlindPalette,
-       _textScaleMin = textScaleMin,
-       _textScaleMax = textScaleMax,
-       _hadExplicitTextScaleDefault = textScaleDefault != null,
-       _mode = initialMode ?? kLazyAllyLight,
-       _colorBlind = initialColorBlind,
-       _textScaleFactor = _clampD(
-         textScaleDefault ?? 1.0,
-         textScaleMin,
-         textScaleMax,
-       );
+       ) {
+    _colorBlindScheme = colorBlindScheme;
+    _customColorSchemes = Map<String, LazyAllyColorSchemePair>.unmodifiable(
+      customColorSchemes,
+    );
+    _selectedCustomScheme = initialCustomScheme;
+    _customThemes = Map<String, LazyAllyThemePair>.unmodifiable(customThemes);
+    _selectedCustomTheme = initialCustomTheme;
+    _textScaleMin = textScaleMin;
+    _textScaleMax = textScaleMax;
+    _hadExplicitTextScaleDefault = textScaleDefault != null;
+    _mode = initialMode ?? kLazyAllySystem;
+    _colorBlind = initialColorBlind;
+    _textScaleFactor = _clampD(
+      textScaleDefault ?? 1.0,
+      textScaleMin,
+      textScaleMax,
+    );
+    _reduceMotionNotifier = ValueNotifier<bool>(false);
+  }
 
-  /// Required light theme. Stock [ThemeData] — LazyAlly does not invent a
-  /// parallel theme type; assign it exactly like `MaterialApp.theme`.
+  /// Plain [ThemeData] — assign it exactly like `MaterialApp.theme`.
   final ThemeData light;
 
   /// Required dark theme.
   final ThemeData dark;
 
-  /// Optional "extra dark" / true-black theme. Falls back to [dark] when a
-  /// consumer selects [kLazyAllyExtraDark] and this is unset.
-  final ThemeData? extraDark;
-
-  final List<Color> _colorBlindPalette;
-  final double _textScaleMin;
-  final double _textScaleMax;
-  final bool _hadExplicitTextScaleDefault;
-
-  String _mode;
-  bool _colorBlind;
-  double _textScaleFactor;
-  bool _seededFromSystem = false;
-
-  /// The currently selected mode. One of [kLazyAllyLight], [kLazyAllyDark],
-  /// [kLazyAllyExtraDark], or (from a planned custom-theme registry onward) a
-  /// custom registered name.
-  String get mode => _mode;
-
-  /// Whether color-blind-safe semantic colors are active.
-  bool get colorBlind => _colorBlind;
-
-  /// The active text scale factor, always within [textScaleMin]..[textScaleMax].
-  double get textScaleFactor => _textScaleFactor;
-
-  double get textScaleMin => _textScaleMin;
-  double get textScaleMax => _textScaleMax;
-
-  /// The resolved [ThemeData] for the current [mode].
+  /// Resolution order: [resolvedCustomScheme] (if selected) overrides
+  /// [colorBlind] entirely; otherwise [colorBlind] applies
+  /// [colorBlindScheme]. Either way `scaffoldBackgroundColor` is updated to
+  /// match, since [ThemeData] otherwise bakes that in from the original
+  /// scheme.
   ThemeData get activeTheme {
-    if (_mode == kLazyAllyExtraDark) return extraDark ?? dark;
-    if (_mode == kLazyAllyDark) return dark;
-    return light;
+    final ThemeData base = _baseTheme;
+    final ColorScheme? custom = resolvedCustomScheme;
+    if (custom != null) return _withScheme(base, custom);
+    if (!_colorBlind) return base;
+    return _withScheme(base, colorBlindScheme);
   }
 
-  void setMode(String mode) {
-    if (mode == _mode) return;
-    _mode = mode;
-    notifyListeners();
+  static ThemeData _withScheme(ThemeData base, ColorScheme scheme) => base
+      .copyWith(colorScheme: scheme, scaffoldBackgroundColor: scheme.surface);
+
+  ThemeData get _baseTheme {
+    final bool isDark = _resolvedBrightness == Brightness.dark;
+    final LazyAllyThemePair? custom = _selectedCustomTheme == null
+        ? null
+        : _customThemes[_selectedCustomTheme];
+    if (custom != null) return isDark ? custom.dark : custom.light;
+    return isDark ? dark : light;
   }
 
-  void setColorBlind(bool value) {
-    if (value == _colorBlind) return;
-    _colorBlind = value;
-    notifyListeners();
-  }
+  /// Snapshot of cache-worthy state for `LazyAlly.onCacheChanged`.
+  LazyAllyPreferences toCache() => LazyAllyPreferences(
+    mode: _mode,
+    colorBlind: _colorBlind,
+    textScaleFactor: _textScaleFactor,
+    selectedCustomScheme: _selectedCustomScheme,
+    selectedCustomTheme: _selectedCustomTheme,
+    reduceMotion: reduceMotion,
+  );
 
-  void setTextScaleFactor(double value) {
-    final clamped = _clampD(value, _textScaleMin, _textScaleMax);
-    if (clamped == _textScaleFactor) return;
-    _textScaleFactor = clamped;
-    notifyListeners();
-  }
-
-  /// Seeds the initial text scale factor from the ambient OS text scaler
-  /// (`MediaQuery.textScalerOf`), **composing with rather than discarding**
-  /// the system's own accessibility setting. Called once by [LazyAlly] on
-  /// first build; a no-op if the app already passed an explicit
-  /// `textScaleDefault`, or if it's already been seeded once.
-  void seedFromSystemTextScale(double systemFactor) {
-    if (_seededFromSystem || _hadExplicitTextScaleDefault) return;
+  /// Restores every cache-worthy field in one notification. Unregistered
+  /// scheme/theme names fall through rather than throwing; text scale is
+  /// clamped. Marks text scale and reduce-motion as seeded so a later OS
+  /// seed (see `LazyAlly`'s `didChangeDependencies`) won't clobber either
+  /// restored value.
+  void applyCache(LazyAllyPreferences cache) {
+    _mode = cache.mode;
+    _colorBlind = cache.colorBlind;
+    _textScaleFactor = _clampD(
+      cache.textScaleFactor,
+      _textScaleMin,
+      _textScaleMax,
+    );
+    _selectedCustomScheme = cache.selectedCustomScheme;
+    _selectedCustomTheme = cache.selectedCustomTheme;
     _seededFromSystem = true;
-    final clamped = _clampD(systemFactor, _textScaleMin, _textScaleMax);
-    if (clamped != _textScaleFactor) {
-      _textScaleFactor = clamped;
-      notifyListeners();
-    }
+    _reduceMotionSeeded = true;
+    _reduceMotionNotifier.value = cache.reduceMotion;
+    notifyListeners();
   }
 
-  /// Resolves [original] to a color-blind-safe color from the Okabe-Ito (or
-  /// custom) palette when [colorBlind] is on; returns [original] unchanged
-  /// otherwise. Intended for **semantic/data colors** (chart series, status
-  /// tags, category chips) — not for [ThemeData]'s neutral surfaces, which
-  /// stay contrast-driven regardless of this flag.
-  Color cvdSafeColor(Color original, int domainIndex) {
-    if (!_colorBlind) return original;
-    return _colorBlindPalette[domainIndex % _colorBlindPalette.length];
+  @override
+  void dispose() {
+    _reduceMotionNotifier.dispose();
+    super.dispose();
   }
 }
+
+// endregion

@@ -1,43 +1,44 @@
 import 'package:flutter/material.dart';
 
-import 'lazy_ally_controller.dart';
+import 'package:lazy_ally/src/lazy_ally_controller.dart';
 
 /// [InheritedNotifier] carrying a [LazyAllyController] down the tree so
 /// descendants rebuild when theme, color-blind, or text-scale state changes.
-class LazyAllyScope extends InheritedNotifier<LazyAllyController> {
-  const LazyAllyScope({
+class LazyAllyProvider extends InheritedNotifier<LazyAllyController> {
+  const LazyAllyProvider({
     super.key,
     required LazyAllyController controller,
     required super.child,
   }) : super(notifier: controller);
 
-  /// The nearest [LazyAllyController]. Asserts if no ancestor [LazyAllyScope]
+  /// The nearest [LazyAllyController]. Asserts if no ancestor [LazyAllyProvider]
   /// exists — wrap your app in a `LazyAlly` widget first.
   static LazyAllyController of(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<LazyAllyScope>();
+    final LazyAllyProvider? scope = context
+        .dependOnInheritedWidgetOfExactType<LazyAllyProvider>();
     assert(
       scope != null,
-      'No LazyAllyScope found in context. Wrap your app in a LazyAlly widget.',
+      'No LazyAllyProvider found in context. Wrap your app in a LazyAlly widget.',
     );
     return scope!.notifier!;
   }
 
   /// Like [of], but returns `null` instead of asserting when no ancestor
-  /// [LazyAllyScope] exists.
+  /// [LazyAllyProvider] exists.
   static LazyAllyController? maybeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<LazyAllyScope>()
+        .dependOnInheritedWidgetOfExactType<LazyAllyProvider>()
         ?.notifier;
   }
 }
 
-/// Convenience accessors for [LazyAllyScope].
+/// Convenience accessors for [LazyAllyProvider].
 extension LazyAllyContext on BuildContext {
   /// The nearest [LazyAllyController]. Asserts if no ancestor `LazyAlly`
   /// widget exists.
-  LazyAllyController get lazyAlly => LazyAllyScope.of(this);
+  LazyAllyController get lazyAlly => LazyAllyProvider.of(this);
 
   /// The resolved [ThemeData] for the current mode — pass this straight to
   /// `MaterialApp(theme: context.lazyAllyTheme)`.
-  ThemeData get lazyAllyTheme => LazyAllyScope.of(this).activeTheme;
+  ThemeData get lazyAllyTheme => LazyAllyProvider.of(this).activeTheme;
 }
