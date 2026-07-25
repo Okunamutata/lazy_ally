@@ -56,10 +56,11 @@ the harder the accessibility problem, the lazier '*easier*' the implementation &
 
 ## Why
 
-Most Flutter apps end up wiring the same three things by hand: a light/dark theme switch, some way to
-keep text size sane and user-adjustable, and — much less often, because it's real, specialized work —
-a way to make data and status colors distinguishable for color-blind users. `lazy_ally` is that wiring,
-generalized into one widget, using only `ThemeData`, `ChangeNotifier`, `InheritedNotifier`, and
+- Most Flutter apps end up wiring the same three things by hand: a light/dark theme switch, some way to
+keep text size sane and user-adjustable, 
+- Accessible minded functionality often takes a back seat to domain specific features & shipping 
+- The same accessibility problems get solved over and over again in every app.
+- We saw a need for a flutter native low maintenance interface using only `ThemeData`, `ChangeNotifier`, `InheritedNotifier`, and
 `BuildContext` — the same primitives you'd reach for if you wrote it yourself, if you had the time.
 
 ---
@@ -77,52 +78,13 @@ dependencies:
 
 Ranked by how much work each one saves you — the harder the problem, the lazier the fix.
 
-### Live OS dark mode — table stakes
+### Dynamic brightness, text scale, and color-blind support — not lazy at all 🤧
 
 ```dart
 runApp(LazyAlly(light: myLightTheme, dark: myDarkTheme, child: const MyApp()));
 ```
 
-System/light/dark, synced to the OS *continuously* (not just at launch — toggle your device's
-brightness mid-session and watch it update), is already done. This much Flutter mostly gives you for
-free; everything below is where it doesn't.
-
-### Text scale that doesn't silently override accessibility settings — an easy mistake to make
-
-The naive version of a "text size" slider throws away a user's OS-level Dynamic Type / font-size
-setting the moment they touch it:
-
-```dart
-// Common, and quietly wrong — clobbers the OS setting outright.
-MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(sliderValue)), child: child)
-```
-
-Doing it right means seeding from `MediaQuery.textScalerOf(context)` once, only overriding after the
-user actually touches your control, and clamping to sane bounds. With `lazy_ally`, that's the default
-behavior of a control that already exists:
-
-```dart
-const LazyAllyTextScaleSlider()
-```
-
-### Color-blind-safe theming — genuinely specialized work most apps skip entirely
-
-Doing this properly means picking a real CVD-safe palette (not guessing), pinning it to
-primary/secondary/tertiary/error, computing correctly-contrasted foreground colors for each pinned hue
-by hand (a seed-derived one is wrong here), and keeping it orthogonal to both brightness *and* any
-custom branding so a color-blind user never has to give up their light/dark preference to get it. With
-`lazy_ally`, that's a switch:
-
-```dart
-const LazyAllyColorBlindSwitch() // Okabe-Ito by default, contrast-correct, orthogonal to everything
-```
-
-### The whole accessible settings surface — extremely lazy
-
-Shipping *all* of the above, plus reduce-motion-aware controls that swap to real static alternatives
-(not just skipping the flashy parts), screen-reader announcements on every change, settings that
-survive an app restart, and copy that's ready for translation — is genuinely weeks of dedicated
-accessibility work most teams never get the budget for. With `lazy_ally`, it's one panel:
+### The whole accessible settings surface — extremely lazy 🥱
 
 ```dart
 void main() => runApp(
