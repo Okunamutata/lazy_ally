@@ -207,6 +207,24 @@ showModalBottomSheet<void>(
 );
 ```
 
+### Reduce-motion-aware content
+
+For your own widgets that need to swap to a static-but-still-communicative alternative under
+reduce-motion — no extra state to manage, no `AnimationController` to start/stop — use
+`LazyAllyReducedMotionBuilder` instead of wiring up your own `ValueListenableBuilder<bool>`:
+
+```dart
+LazyAllyReducedMotionBuilder(
+  motionChild: const CircularProgressIndicator(),
+  reducedMotionChild: const Text('Loading…'),
+)
+```
+
+If you need the current `reduceMotion` value itself — most commonly to start/stop an
+`AnimationController` you own, so it doesn't keep ticking invisibly behind whichever child isn't
+shown — use a `ValueListenableBuilder<bool>` on `context.lazyAlly.reduceMotionListenable` directly
+instead. See `example/lib/widgets/motion_examples.dart` for worked examples of both.
+
 ### Non-English apps
 
 Every LazyAlly widget defaults to English copy but accepts a `labels: LazyAllyLabels` override — chip
