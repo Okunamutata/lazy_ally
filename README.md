@@ -19,7 +19,8 @@ reduce-motion, and screen-reader announcements — done for you, in stock Flutte
 - **Pure Flutter, zero extra dependencies** — built entirely on stock `ThemeData`, `ChangeNotifier`,
   and `InheritedNotifier`. No `MaterialApp` replacement, no bundled fonts, no state-management package.
 - **Live system theming** — system/light/dark, synced to the OS *continuously*, not just at launch.
-- **Color-blind safe by default** — the Okabe-Ito palette out of the box, contrast-correct, and
+- **Color-blind safe by default** — the [IBM color-blind-safe
+  palette](https://www.ibm.com/design/language/color/#color-blindness) out of the box, contrast-correct, and
   orthogonal to brightness, so a color-blind user never gives up their light/dark preference to get it.
 - **Named custom themes & color schemes** — two independent, open-ended registries: swap the whole
   `ThemeData` or just the `ColorScheme`, both resolved live against the active brightness.
@@ -127,37 +128,49 @@ translatable — behind one button. Full runnable version: [`example/`](example/
 ## Usage
 
 ```dart
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
-Future<void> main() async {
-  // Prefetch before runApp so loadLazyAllyPreferences below can return an
-  // already-known value instead of a Future — LazyAlly then applies it in
-  // initState, before the first frame, with no flash of constructor defaults.
-  final LazyAllyPreferences? cachedPrefs = await readCachedLazyAllyPreferences();
+void main() => runZonedGuarded(
+  () async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(
-    LazyAlly(
-      light: myLightTheme,
-      dark: myDarkTheme,
-      // Optional — everything below has a reasonable default.
-      colorBlindScheme: (light: /* ... */, dark: /* ... */),
-      customColorSchemes: <String, LazyAllyColorSchemePair>{ /* ... */ },
-      initialCustomScheme: 'pride',
-      customThemes: <String, LazyAllyThemePair>{ /* ... */ },
-      initialCustomTheme: 'mango',
-      textScaleMin: 0.85,
-      textScaleMax: 1.6,
-      textScaleDefault: 1.0,
-      initialMode: kLazyAllySystem,
-      initialColorBlind: false,
-      initiallyDisableAnimation: false,
-      loadLazyAllyPreferences: () => cachedPrefs,
-      onLazyAllyPreferencesChanged: (LazyAllyPreferences prefs) => /* ... */,
-      child: const MyApp(),
-    ),
-  );
-}
+    // Prefetch before runApp so loadLazyAllyPreferences below can return an
+    // already-known value instead of a Future — LazyAlly then applies it in
+    // initState, before the first frame, with no flash of constructor
+    // defaults. This is the recommended pattern; a Future-returning
+    // loadLazyAllyPreferences still works, it just can't avoid that flash.
+    final LazyAllyPreferences? cachedPrefs = await readCachedLazyAllyPreferences();
+
+    runApp(
+      LazyAlly(
+        light: myLightTheme,
+        dark: myDarkTheme,
+        // Optional — everything below has a reasonable default.
+        colorBlindScheme: (light: /* ... */, dark: /* ... */),
+        customColorSchemes: <String, LazyAllyColorSchemePair>{ /* ... */ },
+        initialCustomScheme: 'pride',
+        customThemes: <String, LazyAllyThemePair>{ /* ... */ },
+        initialCustomTheme: 'mango',
+        textScaleMin: 0.85,
+        textScaleMax: 1.6,
+        textScaleDefault: 1.0,
+        initialMode: kLazyAllySystem,
+        initialColorBlind: false,
+        initiallyDisableAnimation: false,
+        loadLazyAllyPreferences: () => cachedPrefs,
+        onLazyAllyPreferencesChanged: (LazyAllyPreferences prefs) => /* ... */,
+        child: const MyApp(),
+      ),
+    );
+  },
+  // runZonedGuarded catches errors thrown asynchronously (e.g. during the
+  // prefetch above) that would otherwise crash silently before runApp.
+  (Object error, StackTrace stackTrace) => log('$error:\n$stackTrace'),
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

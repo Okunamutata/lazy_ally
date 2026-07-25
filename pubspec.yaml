@@ -1,5 +1,5 @@
 name: lazy_ally
-description: "The lazy way to make your Flutter app accessible: system-aware theming, Okabe-Ito color-blind support, reduce-motion, and screen-reader announcements — stock Flutter only."
+description: "The lazy way to make your Flutter app accessible: system-aware theming, IBM color-blind-safe support, reduce-motion, and screen-reader announcements — stock Flutter only."
 version: 0.1.0-dev.1
 homepage: https://github.com/okunamutata/lazy_ally
 repository: https://github.com/okunamutata/lazy_ally

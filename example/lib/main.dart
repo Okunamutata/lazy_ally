@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lazy_ally/lazy_ally.dart';
@@ -15,7 +17,14 @@ const String _cacheKey = 'lazy_ally_cache';
 /// that's `shared_preferences` plus a plain `jsonDecode`, but a file, a
 /// backend call, or a different local-storage package would work exactly
 /// the same way from LazyAlly's side.
-Future<LazyAllyPreferences?> _loadLazyAllyPreferences() async {
+// Future<LazyAllyPreferences?> _loadLazyAllyPreferences() async {
+//   final SharedPreferences prefs = await SharedPreferences.getInstance();
+//   final String? raw = prefs.getString(_cacheKey);
+//   if (raw == null) return null;
+//   return LazyAllyPreferences.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+// }
+
+Future<LazyAllyPreferences?> getLazyAllyPreferences() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? raw = prefs.getString(_cacheKey);
   if (raw == null) return null;
@@ -32,29 +41,42 @@ Future<void> _saveCache(LazyAllyPreferences cache) async {
   await prefs.setString(_cacheKey, jsonEncode(cache.toJson()));
 }
 
-void main() => runApp(
-  LazyAlly(
-    light: ThemeData(
-      brightness: Brightness.light,
-      colorSchemeSeed: Colors.teal,
-      useMaterial3: true,
-    ),
-    dark: ThemeData(
-      brightness: Brightness.dark,
-      colorSchemeSeed: Colors.teal,
-      useMaterial3: true,
-    ),
-    textScaleMin: 0.85,
-    textScaleMax: 1.8,
+void main()async => runZonedGuarded(
+  () async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final LazyAllyPreferences? prefs = await getLazyAllyPreferences();
 
-    // region Optional — everything below has a working default
-    loadLazyAllyPreferences: _loadLazyAllyPreferences,
-    onLazyAllyPreferencesChanged: _saveCache,
-    customColorSchemes: exampleCustomColorSchemes,
-    customThemes: exampleCustomThemes,
-    // endregion
-    child: const ExampleApp(),
-  ),
+    runApp(
+      LazyAlly(
+        light: ThemeData(
+          brightness: Brightness.light,
+          colorSchemeSeed: Colors.teal,
+          useMaterial3: true,
+        ),
+        dark: ThemeData(
+          brightness: Brightness.dark,
+          colorSchemeSeed: Colors.teal,
+          useMaterial3: true,
+        ),
+        textScaleMin: 0.85,
+        textScaleMax: 1.8,
+
+        // region Optional — everything below has a working default
+        //if your using a future at instead, use
+        //loadLazyAllyPreferences: _loadLazyAllyPreferences,
+        loadLazyAllyPreferences: () => prefs,
+
+        onLazyAllyPreferencesChanged: _saveCache,
+        customColorSchemes: exampleCustomColorSchemes,
+        customThemes: exampleCustomThemes,
+        // endregion
+        child: const ExampleApp(),
+      ),
+    );
+  },
+  (Object error, StackTrace stackTrace) {
+    log('$error :\n${stackTrace.toString()} ');
+  },
 );
 
 /// This is the pattern LazyAlly is built around: `MyApp`'s `context` is

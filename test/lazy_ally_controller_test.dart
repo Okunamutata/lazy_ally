@@ -158,22 +158,22 @@ void main() {
       expect(c.activeTheme, same(light));
     });
 
-    test('activeTheme swaps in the Okabe-Ito light scheme by default, matched '
+    test('activeTheme swaps in the IBM color-blind-safe light scheme by default, matched '
         "to the active theme's own brightness", () {
       final LazyAllyController c = LazyAllyController(
         light: light,
         dark: dark,
         initialColorBlind: true,
       );
-      expect(c.activeTheme.colorScheme, kOkabeItoColorSchemeLight);
+      expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
       expect(
         c.activeTheme.scaffoldBackgroundColor,
-        kOkabeItoColorSchemeLight.surface,
+        kIbmColorBlindSchemeLight.surface,
       );
     });
 
     test(
-      'activeTheme swaps in the Okabe-Ito dark scheme when the active theme is dark',
+      'activeTheme swaps in the IBM color-blind-safe dark scheme when the active theme is dark',
       () {
         final LazyAllyController c = LazyAllyController(
           light: light,
@@ -181,12 +181,12 @@ void main() {
           initialMode: kLazyAllyDark,
           initialColorBlind: true,
         );
-        expect(c.activeTheme.colorScheme, kOkabeItoColorSchemeDark);
+        expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeDark);
       },
     );
 
     test(
-      'an explicit colorBlindScheme override replaces the Okabe-Ito default, '
+      'an explicit colorBlindScheme override replaces the IBM color-blind-safe default, '
       'and re-resolves the correct member on mode switch',
       () {
         final ColorScheme customLight = ColorScheme.fromSeed(
@@ -272,7 +272,7 @@ void main() {
         expect(c.activeTheme.colorScheme, halloweenLight);
 
         c.setCustomScheme(null);
-        expect(c.activeTheme.colorScheme, kOkabeItoColorSchemeLight);
+        expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
       },
     );
 
@@ -420,12 +420,12 @@ void main() {
         initialColorBlind: true,
       );
       final ThemeData active = c.activeTheme;
-      expect(active.colorScheme, kOkabeItoColorSchemeLight);
+      expect(active.colorScheme, kIbmColorBlindSchemeLight);
       // Structure (e.g. scaffoldBackgroundColor before the colorBlind
       // swap overwrote it) still traces back to mango, not plain light —
       // proven by scaffoldBackgroundColor matching the ColorScheme swap
       // rather than mango's own orange, since colorBlind wins for color.
-      expect(active.scaffoldBackgroundColor, kOkabeItoColorSchemeLight.surface);
+      expect(active.scaffoldBackgroundColor, kIbmColorBlindSchemeLight.surface);
     });
   });
 

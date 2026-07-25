@@ -18,11 +18,12 @@ mixin _ColorBlindMixin on ChangeNotifier {
   }
 
   /// The [ColorScheme] [activeTheme] swaps in while [colorBlind] is on and
-  /// no custom scheme overrides it. Defaults to Okabe-Ito.
+  /// no custom scheme overrides it. Defaults to the IBM color-blind-safe
+  /// palette.
   ColorScheme get colorBlindScheme {
     final LazyAllyColorSchemePair pair =
         _colorBlindScheme ??
-        (light: kOkabeItoColorSchemeLight, dark: kOkabeItoColorSchemeDark);
+        (light: kIbmColorBlindSchemeLight, dark: kIbmColorBlindSchemeDark);
     return _baseTheme.brightness == Brightness.dark ? pair.dark : pair.light;
   }
 }

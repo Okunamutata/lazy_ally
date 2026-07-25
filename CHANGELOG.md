@@ -20,7 +20,8 @@ Core primitives — first working milestone, not yet published to pub.dev.
   whichever member matches the active brightness, live; supplying a complete, correct pair per
   brightness is the caller's responsibility.
 - Color-blind flag (`colorBlind`) orthogonal to brightness mode. When on, `activeTheme` swaps in a
-  full `ColorScheme` rather than remapping individual colors. Defaults to a generated Okabe-Ito pair;
+  full `ColorScheme` rather than remapping individual colors. Defaults to a generated IBM
+  color-blind-safe pair;
   overridable via `colorBlindScheme`.
 - `customColorSchemes: Map<String, LazyAllyColorSchemePair>` (+ `initialCustomScheme`,
   `setCustomScheme`) and `customThemes: Map<String, LazyAllyThemePair>` (+ `initialCustomTheme`,

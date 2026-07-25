@@ -127,8 +127,9 @@ Two independent layers, resolved in this order every time `activeTheme` is read:
 1. **Base theme** — `light`/`dark`, or the selected `customThemes` entry if one is set (replaces the
    entire `ThemeData`: typography, shapes, component themes).
 2. **Color scheme** — layered on top of whichever base theme step 1 picked. A selected
-   `customColorSchemes` entry wins if set; otherwise `colorBlind` (if on) swaps in the Okabe-Ito (or
-   your own `colorBlindScheme`) pair; otherwise the base theme's own `ColorScheme` is left alone.
+   `customColorSchemes` entry wins if set; otherwise `colorBlind` (if on) swaps in the IBM
+   color-blind-safe (or your own `colorBlindScheme`) pair; otherwise the base theme's own `ColorScheme`
+   is left alone.
 
 So a selected custom theme and a selected custom color scheme can be active *at the same time* —
 they're not mutually exclusive, since one replaces structure and the other replaces color.

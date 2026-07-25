@@ -1,6 +1,6 @@
 /// Wrap your app in a [LazyAlly] widget for system/light/dark theming (plus
-/// your own named custom themes/color schemes), an orthogonal Okabe-Ito
-/// color-blind flag, and text-scale limits — built entirely on stock
+/// your own named custom themes/color schemes), an orthogonal IBM
+/// color-blind-safe flag, and text-scale limits — built entirely on stock
 /// Flutter tooling (`ThemeData`, `ChangeNotifier`, `InheritedNotifier`,
 /// `BuildContext`).
 library;
@@ -12,7 +12,7 @@ export 'src/domain/lazy_ally_preferences.dart';
 export 'src/lazy_ally_controller.dart';
 export 'src/domain/lazy_ally_labels.dart';
 export 'src/lazy_ally_provider.dart';
-export 'src/colors/okabe_ito.dart';
+export 'src/colors/ibm_color_blind.dart';
 export 'src/widgets/lazy_ally_brightness_selector.dart';
 export 'src/widgets/lazy_ally_color_blind_switch.dart';
 export 'src/widgets/lazy_ally_custom_scheme_selector.dart';

@@ -123,7 +123,7 @@ void main() {
       final Element context = tester.element(find.byType(HomePage));
       expect(
         context.lazyAlly.activeTheme.colorScheme,
-        kOkabeItoColorSchemeLight,
+        kIbmColorBlindSchemeLight,
       );
 
       // HomePage's ListView has enough content above this section (motion
@@ -187,14 +187,14 @@ void main() {
       );
       expect(
         Theme.of(sheetContext).colorScheme,
-        isNot(kOkabeItoColorSchemeLight),
+        isNot(kIbmColorBlindSchemeLight),
       );
 
       await tester.tap(find.byType(LazyAllyColorBlindSwitch));
       await tester.pump();
 
       expect(tester.takeException(), isNull);
-      expect(Theme.of(sheetContext).colorScheme, kOkabeItoColorSchemeLight);
+      expect(Theme.of(sheetContext).colorScheme, kIbmColorBlindSchemeLight);
     },
   );
 

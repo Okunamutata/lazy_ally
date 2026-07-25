@@ -8,7 +8,7 @@ import 'package:lazy_ally/src/lazy_ally_provider.dart';
 
 /// Wraps an app (typically above [MaterialApp]) to provide system/light/dark
 /// theming (plus an open registry of your own named [customThemes]), an
-/// orthogonal Okabe-Ito color-blind flag, and text-scale limits — built
+/// orthogonal IBM color-blind-safe flag, and text-scale limits — built
 /// entirely on stock Flutter primitives (plain [ThemeData], a
 /// [ChangeNotifier] controller, an [InheritedNotifier] scope). No
 /// [MaterialApp] replacement, no bundled fonts, no state-management package
@@ -78,7 +78,7 @@ class LazyAlly extends StatefulWidget {
   /// The light/dark pair swapped into [ThemeData.colorScheme] whenever
   /// color-blind mode is on — [LazyAllyController] always picks whichever
   /// member matches the active theme's current brightness. If omitted,
-  /// defaults to an Okabe-Ito-based pair. Supplying a complete, correctly
+  /// defaults to an IBM color-blind-safe pair. Supplying a complete, correctly
   /// readable [ColorScheme] for each brightness is the caller's
   /// responsibility; LazyAlly picks between them, it doesn't inspect or
   /// correct either one.
