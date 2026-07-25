@@ -153,7 +153,7 @@ Future<void> main() async {
       initialColorBlind: false,
       initiallyDisableAnimation: false,
       loadLazyAllyPreferences: () => cachedPrefs,
-      onLazyAllyPreferencesChanged: (prefs) => /* ... */,
+      onLazyAllyPreferencesChanged: (LazyAllyPreferences prefs) => /* ... */,
       child: const MyApp(),
     ),
   );
@@ -177,7 +177,7 @@ class MyApp extends StatelessWidget {
 Read and change settings anywhere below `LazyAlly` via `context.lazyAlly`:
 
 ```dart
-final ally = context.lazyAlly;
+final LazyAllyController ally = context.lazyAlly;
 ally.setMode(kLazyAllyDark);       // kLazyAllySystem | kLazyAllyLight | kLazyAllyDark
 ally.setColorBlind(true);
 ally.setTextScaleFactor(1.2);      // clamped to [textScaleMin, textScaleMax]
