@@ -73,7 +73,7 @@ to be.
 
 ```yaml
 dependencies:
-  lazy_ally: ^0.1.0
+  lazy_ally: ^1.0.3
 ```
 
 ---
