@@ -10,8 +10,6 @@
 lazy_ally makes your Flutter app accessible with one widget. It handles system-aware theming,
 color-blind support, reduce-motion, and screen-reader announcements, using only stock Flutter.
 
-> **Status:** early / pre-release (`0.1.0-dev`). See [CHANGELOG.md](CHANGELOG.md).
-
 ---
 
 ## Features
