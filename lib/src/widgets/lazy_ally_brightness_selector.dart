@@ -6,28 +6,29 @@ import 'package:lazy_ally/src/domain/lazy_ally_labels.dart';
 import 'package:lazy_ally/src/lazy_ally_provider.dart';
 import 'package:lazy_ally/src/widgets/lazy_ally_reduced_motion_builder.dart';
 
-/// A brightness picker (System/Light/Dark) bound to the nearest
+/// A brightness picker (System, Light, Dark) bound to the nearest
 /// [LazyAllyProvider].
 ///
-/// Place it anywhere below a `LazyAlly` widget — it reads and writes
-/// [LazyAllyController.mode] directly and rebuilds on change via
+/// Place this widget anywhere below a `LazyAlly` widget. It reads and writes
+/// [LazyAllyController.mode] directly, and it rebuilds on change through
 /// [LazyAllyProvider]'s `InheritedNotifier`. It does not manage navigation,
-/// paging, or its own container (dialog, sheet, page) — that's the calling
-/// app's job.
+/// paging, or its own container, such as a dialog, sheet, or page. That is
+/// the job of the calling app.
 ///
-/// Always offers exactly these three — [kLazyAllySystem] ("System"),
-/// [kLazyAllyLight], [kLazyAllyDark] — no bespoke "extra dark" segment or
-/// similar; register variants like that as a named
-/// `LazyAllyController.customThemes` entry instead and offer them via
-/// `LazyAllyCustomThemeSelector`.
+/// This widget always offers exactly three options: [kLazyAllySystem]
+/// ("System"), [kLazyAllyLight], and [kLazyAllyDark]. Do not add a custom
+/// "extra dark" segment or similar option here. Register variants like that
+/// as a named `LazyAllyController.customThemes` entry, and offer them
+/// through `LazyAllyCustomThemeSelector`.
 ///
-/// Renders a [Wrap] of [ChoiceChip]s normally, swapping to a plain row of
-/// toggle buttons under `reduceMotion` via [LazyAllyReducedMotionBuilder] —
-/// `ChoiceChip`'s own select animation isn't suppressible in place. Build
-/// your own alternative with `reduceMotionListenable`/
-/// [LazyAllyReducedMotionBuilder] if you need something more specific.
+/// This widget renders a [Wrap] of [ChoiceChip]s in the normal case. Under
+/// `reduceMotion`, it switches to a plain row of toggle buttons through
+/// [LazyAllyReducedMotionBuilder], because you cannot suppress
+/// `ChoiceChip`'s own select animation in place. Build your own alternative
+/// with `reduceMotionListenable` and [LazyAllyReducedMotionBuilder] if you
+/// need something more specific.
 ///
-/// Text and announcements come from [labels] — see [LazyAllyLabels] for
+/// Text and announcements come from [labels]. See [LazyAllyLabels] for
 /// non-English apps.
 class LazyAllyBrightnessSelector extends StatelessWidget {
   const LazyAllyBrightnessSelector({
@@ -116,8 +117,8 @@ class _ChipRow extends StatelessWidget {
   }
 }
 
-/// Non-animated stand-in for [_ChipRow]: which button type renders per
-/// option flips instantly with [controller]'s state, no transition.
+/// Non-animated stand-in for [_ChipRow]. The button type for each option
+/// changes instantly with [controller]'s state, with no transition.
 class _ButtonRow extends StatelessWidget {
   const _ButtonRow({
     required this.controller,

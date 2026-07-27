@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
-/// Full theme pairs registered via `LazyAlly.customThemes` in `main.dart`.
-/// A selected [LazyAllyThemePair] replaces the *entire* base [ThemeData],
-/// not just its [ColorScheme] (see `custom_schemes.dart` for that narrower
-/// version) — each fruit varies both hue and corner shape here so the
-/// difference reads as more than a recolor.
+/// Full theme pairs registered through `LazyAlly.customThemes` in
+/// `main.dart`. A selected [LazyAllyThemePair] replaces the *entire* base
+/// [ThemeData], not just its [ColorScheme] (see `custom_schemes.dart` for
+/// that narrower version). Each fruit varies both hue and corner shape here
+/// so the difference reads as more than a recolor.
 final Map<String, LazyAllyThemePair>
 exampleCustomThemes = <String, LazyAllyThemePair>{
   'mango': _fruitTheme(seedColor: const Color(0xFFFFA726), cornerRadius: 20),

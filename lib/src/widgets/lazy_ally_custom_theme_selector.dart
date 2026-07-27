@@ -5,19 +5,22 @@ import 'package:lazy_ally/src/domain/lazy_ally_labels.dart';
 import 'package:lazy_ally/src/lazy_ally_provider.dart';
 import 'package:lazy_ally/src/widgets/lazy_ally_registry_selector.dart';
 
-/// Builds the widget for one entry: [name] is the key from
+/// Builds the widget for one entry. [name] is the key from
 /// [LazyAllyController.customThemes], or `null` for "no selection".
-/// [selected] is whether it's the current
-/// [LazyAllyController.selectedCustomTheme]. Call [onSelect] on tap.
+/// [selected] shows whether this entry is the current
+/// [LazyAllyController.selectedCustomTheme]. This function calls [onSelect]
+/// on tap.
 typedef LazyAllyCustomThemeItemBuilder = LazyAllyRegistryItemBuilder;
 
-/// [LazyAllyCustomSchemeSelector]'s counterpart for
-/// [LazyAllyController.customThemes] — a full [ThemeData] pair instead of
-/// just a [ColorScheme]. Same shape: [itemBuilder] owns copy/styling, omit
-/// it for a default [ChoiceChip] per entry (swapped for a plain button
-/// under reduce-motion).
+/// The counterpart to [LazyAllyCustomSchemeSelector] for
+/// [LazyAllyController.customThemes]. This widget uses a full [ThemeData]
+/// pair instead of just a [ColorScheme]. It has the same shape:
+/// [itemBuilder] owns the copy and styling. Omit [itemBuilder] to get a
+/// default [ChoiceChip] for each entry, which this widget swaps for a plain
+/// button under reduce motion.
 ///
-/// Not included in [LazyAllyPanel] — copy here is a product decision.
+/// This widget is not included in [LazyAllyPanel]. The copy here is a
+/// product decision for the calling app.
 class LazyAllyCustomThemeSelector extends StatelessWidget {
   const LazyAllyCustomThemeSelector({
     super.key,

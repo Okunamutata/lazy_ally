@@ -8,14 +8,14 @@ import 'package:lazy_ally/src/lazy_ally_provider.dart';
 /// A standard [SwitchListTile] bound to the nearest [LazyAllyProvider]'s
 /// [LazyAllyController.colorBlind] flag.
 ///
-/// Place it anywhere below a `LazyAlly` widget. [SwitchListTile] already
-/// merges its `title`/`subtitle` and toggled state into one semantics node
-/// with no extra work needed; this additionally announces the change via
-/// [lazyAllyAnnounce], since flipping a switch doesn't itself generate a
-/// spoken confirmation the way a focus change does.
+/// Place this widget anywhere below a `LazyAlly` widget. [SwitchListTile]
+/// already merges its `title`, `subtitle`, and toggled state into one
+/// semantics node, with no extra work needed. This widget also announces
+/// the change through [lazyAllyAnnounce], because flipping a switch does not
+/// itself generate a spoken confirmation the way a focus change does.
 ///
-/// Title, subtitle, and the announcement all come from [labels] (English by
-/// default) — see [LazyAllyLabels] to override any of them for a
+/// The title, subtitle, and announcement all come from [labels] (English by
+/// default). See [LazyAllyLabels] to override any of these for a
 /// non-English app.
 class LazyAllyColorBlindSwitch extends StatelessWidget {
   const LazyAllyColorBlindSwitch({

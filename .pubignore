@@ -24,6 +24,14 @@ example/.dart_tool/
 PUBLISHING.md
 Makefile
 
+# Agent-facing files — instructions for AI coding agents working this repo,
+# not for package consumers. `dart pub publish` already excludes dotfiles/
+# dotdirs by default (.claude/, .agent-review-pending), so those need no
+# entry here; these are listed explicitly since they don't start with a dot.
+AGENTS.md
+AGENT_CODE_OF_CONDUCT.md
+CLAUDE.md
+
 # The example app's native runner scaffolding (Gradle/Xcode projects, app
 # icons, plists, ...) — pub.dev only needs example/lib, example/pubspec.yaml,
 # and example/test to demonstrate real usage; the platform projects are

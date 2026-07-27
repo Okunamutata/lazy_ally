@@ -158,19 +158,22 @@ void main() {
       expect(c.activeTheme, same(light));
     });
 
-    test('activeTheme swaps in the IBM color-blind-safe light scheme by default, matched '
-        "to the active theme's own brightness", () {
-      final LazyAllyController c = LazyAllyController(
-        light: light,
-        dark: dark,
-        initialColorBlind: true,
-      );
-      expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
-      expect(
-        c.activeTheme.scaffoldBackgroundColor,
-        kIbmColorBlindSchemeLight.surface,
-      );
-    });
+    test(
+      'activeTheme swaps in the IBM color-blind-safe light scheme by default, matched '
+      "to the active theme's own brightness",
+      () {
+        final LazyAllyController c = LazyAllyController(
+          light: light,
+          dark: dark,
+          initialColorBlind: true,
+        );
+        expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
+        expect(
+          c.activeTheme.scaffoldBackgroundColor,
+          kIbmColorBlindSchemeLight.surface,
+        );
+      },
+    );
 
     test(
       'activeTheme swaps in the IBM color-blind-safe dark scheme when the active theme is dark',

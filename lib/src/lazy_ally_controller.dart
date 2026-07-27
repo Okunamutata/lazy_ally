@@ -12,25 +12,26 @@ part 'controller/lazy_ally_controller_reduce_motion.dart';
 part 'controller/lazy_ally_controller_text_scale.dart';
 
 // region Modes
-/// [LazyAllyController.mode] values. Just these three — for a variant like
-/// "extra dark", register a named [LazyAllyController.customThemes] entry
-/// instead.
+/// [LazyAllyController.mode] values. LazyAlly supports only these three
+/// modes. For a variant such as "extra dark", register a named
+/// [LazyAllyController.customThemes] entry instead.
 const String kLazyAllyLight = 'light';
 const String kLazyAllyDark = 'dark';
 
-/// Follows the OS's own brightness live. The default [LazyAllyController.mode].
+/// This mode follows the OS's own brightness live. It is the default
+/// [LazyAllyController.mode].
 const String kLazyAllySystem = 'system';
 // endregion
 
 // region Theme pair typedefs
 /// A light/dark [ColorScheme] pair. [LazyAllyController] always resolves to
-/// whichever member matches the active brightness — supplying a correct
-/// pair per brightness is the caller's responsibility.
+/// the member that matches the active brightness. You are responsible for
+/// supplying a correct pair for each brightness.
 typedef LazyAllyColorSchemePair = ({ColorScheme light, ColorScheme dark});
 
-/// A light/dark full [ThemeData] pair. Unlike [LazyAllyColorSchemePair]
-/// (which swaps only [ThemeData.colorScheme]), a selected pair *is* the
-/// base theme.
+/// A light/dark full [ThemeData] pair. Unlike [LazyAllyColorSchemePair],
+/// which swaps only [ThemeData.colorScheme], a selected pair *is* the base
+/// theme.
 typedef LazyAllyThemePair = ({ThemeData light, ThemeData dark});
 // endregion
 
@@ -42,11 +43,12 @@ double _clampD(double value, double lo, double hi) {
 
 // region LazyAllyController
 /// Holds LazyAlly's theme selection, color-blind flag, and text-scale
-/// state, and notifies listeners on change.
+/// state. This class notifies listeners on every change.
 ///
-/// Split across `lazy_ally_controller_*.dart` part files by concern
-/// (brightness, color-blind, custom schemes/themes, text scale, reduce
-/// motion) — still one class, one library, one set of instance state.
+/// The implementation is split across `lazy_ally_controller_*.dart` part
+/// files by concern: brightness, color-blind, custom schemes and themes,
+/// text scale, and reduce motion. It is still one class, one library, and
+/// one set of instance state.
 class LazyAllyController extends ChangeNotifier
     with
         _BrightnessMixin,
@@ -94,17 +96,18 @@ class LazyAllyController extends ChangeNotifier
     _reduceMotionNotifier = ValueNotifier<bool>(false);
   }
 
-  /// Plain [ThemeData] — assign it exactly like `MaterialApp.theme`.
+  /// A plain [ThemeData]. Assign it exactly as you would assign
+  /// `MaterialApp.theme`.
   final ThemeData light;
 
   /// Required dark theme.
   final ThemeData dark;
 
-  /// Resolution order: [resolvedCustomScheme] (if selected) overrides
-  /// [colorBlind] entirely; otherwise [colorBlind] applies
-  /// [colorBlindScheme]. Either way `scaffoldBackgroundColor` is updated to
-  /// match, since [ThemeData] otherwise bakes that in from the original
-  /// scheme.
+  /// Resolution order: if selected, [resolvedCustomScheme] overrides
+  /// [colorBlind] entirely. Otherwise, [colorBlind] applies
+  /// [colorBlindScheme]. Either way, LazyAlly updates
+  /// `scaffoldBackgroundColor` to match, because [ThemeData] otherwise
+  /// bakes that color in from the original scheme.
   ThemeData get activeTheme {
     final ThemeData base = _baseTheme;
     final ColorScheme? custom = resolvedCustomScheme;
@@ -125,7 +128,7 @@ class LazyAllyController extends ChangeNotifier
     return isDark ? dark : light;
   }
 
-  /// Snapshot of cache-worthy state for `LazyAlly.onCacheChanged`.
+  /// A snapshot of cache-worthy state for `LazyAlly.onCacheChanged`.
   LazyAllyPreferences toCache() => LazyAllyPreferences(
     mode: _mode,
     colorBlind: _colorBlind,
@@ -136,10 +139,10 @@ class LazyAllyController extends ChangeNotifier
   );
 
   /// Restores every cache-worthy field in one notification. Unregistered
-  /// scheme/theme names fall through rather than throwing; text scale is
-  /// clamped. Marks text scale and reduce-motion as seeded so a later OS
-  /// seed (see `LazyAlly`'s `didChangeDependencies`) won't clobber either
-  /// restored value.
+  /// scheme or theme names fall through instead of throwing an error. This
+  /// method clamps the text scale. It also marks text scale and reduce
+  /// motion as seeded, so a later OS seed (see `LazyAlly`'s
+  /// `didChangeDependencies`) does not overwrite either restored value.
   void applyCache(LazyAllyPreferences cache) {
     _mode = cache.mode;
     _colorBlind = cache.colorBlind;

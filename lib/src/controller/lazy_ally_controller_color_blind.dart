@@ -2,8 +2,8 @@ part of '../lazy_ally_controller.dart';
 
 // region Color-blind
 mixin _ColorBlindMixin on ChangeNotifier {
-  /// Supplied by [LazyAllyController]; [colorBlindScheme] needs the active
-  /// theme's brightness to pick the right member of a pair.
+  /// [LazyAllyController] supplies this value. [colorBlindScheme] needs the
+  /// brightness of the active theme to pick the right member of a pair.
   ThemeData get _baseTheme;
 
   late final LazyAllyColorSchemePair? _colorBlindScheme;
@@ -17,9 +17,9 @@ mixin _ColorBlindMixin on ChangeNotifier {
     notifyListeners();
   }
 
-  /// The [ColorScheme] [activeTheme] swaps in while [colorBlind] is on and
-  /// no custom scheme overrides it. Defaults to the IBM color-blind-safe
-  /// palette.
+  /// The [ColorScheme] that [activeTheme] swaps in while [colorBlind] is on
+  /// and no custom scheme overrides it. The default value is the IBM
+  /// color-blind-safe palette.
   ColorScheme get colorBlindScheme {
     final LazyAllyColorSchemePair pair =
         _colorBlindScheme ??

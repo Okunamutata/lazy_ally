@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
-/// Custom color scheme pairs registered via `LazyAlly.customColorSchemes` in
-/// `main.dart` — demonstrating the "arbitrary named theme" feature.
-/// Selecting any of these **overrides color-blind mode**, per
-/// `LazyAllyController.activeTheme`'s resolution order; see the panel's
-/// "Custom theme" section for that in the UI.
+/// Custom color scheme pairs registered through `LazyAlly.customColorSchemes`
+/// in `main.dart`. This demonstrates the "arbitrary named theme" feature.
+/// Selecting any of these **overrides color-blind mode**, per the resolution
+/// order of `LazyAllyController.activeTheme`. See the panel's "Custom theme"
+/// section for that in the UI.
 ///
 /// Each entry is a [LazyAllyColorSchemePair]: the same brand/thematic hues,
-/// built once for [Brightness.light] and once for [Brightness.dark] via
-/// [_pairFrom] — LazyAlly always picks whichever member matches the active
-/// theme's current brightness, so there's never a mismatch to correct.
+/// built once for [Brightness.light] and once for [Brightness.dark] through
+/// [_pairFrom]. LazyAlly always picks the member that matches the active
+/// theme's current brightness, so there is never a mismatch to correct.
 final Map<String, LazyAllyColorSchemePair> exampleCustomColorSchemes =
     <String, LazyAllyColorSchemePair>{
       'flutter': _pairFrom(primary: _flutterBlue, secondary: _flutterSkyBlue),
@@ -32,10 +32,10 @@ final Map<String, LazyAllyColorSchemePair> exampleCustomColorSchemes =
       ),
     };
 
-/// Builds a light+dark [LazyAllyColorSchemePair] from the same pinned hues —
-/// only `brightness` differs between the two, so the brand/thematic accent
-/// colors stay recognizable in both modes while surfaces/on-colors are
-/// still generated correctly per brightness by [ColorScheme.fromSeed].
+/// Builds a light+dark [LazyAllyColorSchemePair] from the same pinned hues.
+/// Only `brightness` differs between the two, so the brand/thematic accent
+/// colors stay recognizable in both modes, while [ColorScheme.fromSeed]
+/// still generates surfaces and on-colors correctly for each brightness.
 LazyAllyColorSchemePair _pairFrom({
   required Color primary,
   Color? secondary,

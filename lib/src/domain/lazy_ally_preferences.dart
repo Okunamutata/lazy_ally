@@ -4,26 +4,28 @@ import 'package:flutter/foundation.dart';
 
 import 'package:lazy_ally/src/lazy_ally_controller.dart';
 
-/// Reads a previously-saved [LazyAllyPreferences], or `null` if there isn't
-/// one yet (e.g. first launch). Supplied as `LazyAlly.loadLazyAllyPreferences` — called
-/// once, in `initState`.
+/// Reads a previously-saved [LazyAllyPreferences]. The value is `null` if
+/// there is not one yet, for example on first launch. You supply this
+/// function as `LazyAlly.loadLazyAllyPreferences`. LazyAlly calls this
+/// function once, in `initState`.
 ///
-/// You decide where this reads from (`SharedPreferences`, a file, a backend
-/// sync call) — LazyAlly has no opinion and no storage dependency of its
-/// own. Returning a plain value (not `async`) — i.e. you already fetched it
-/// before `runApp()` — lets LazyAlly apply it before the first frame, with
-/// no flash of constructor defaults; see `LazyAlly.loadLazyAllyPreferences`.
+/// You decide where this function reads from, such as `SharedPreferences`,
+/// a file, or a backend sync call. LazyAlly has no opinion and no storage
+/// dependency of its own. If you return a plain value instead of an `async`
+/// one, because you already fetched the value before `runApp()`, LazyAlly
+/// applies it before the first frame, with no flash of constructor
+/// defaults. See `LazyAlly.loadLazyAllyPreferences`.
 typedef LazyAllyPreferencesReader = FutureOr<LazyAllyPreferences?> Function();
 
-/// Writes a [LazyAllyPreferences] snapshot. Supplied as
-/// `LazyAlly.onLazyAllyPreferencesChanged` — called every time cache-worthy
-/// state changes (mode, color-blind, text scale, selected custom
-/// scheme/theme, or reduce-motion).
+/// Writes a [LazyAllyPreferences] snapshot. You supply this function as
+/// `LazyAlly.onLazyAllyPreferencesChanged`. LazyAlly calls this function
+/// every time cache-worthy state changes: mode, color-blind, text scale,
+/// selected custom scheme or theme, or reduce-motion.
 ///
-/// You decide where this writes to, and whether/how to debounce rapid
-/// changes (e.g. dragging the text-scale slider fires this on every step)
-/// — LazyAlly calls this as plainly as the state actually changes, it does
-/// not coalesce calls for you.
+/// You decide where this function writes to, and whether and how to
+/// debounce rapid changes. For example, dragging the text-scale slider
+/// fires this function on every step. LazyAlly calls this function each
+/// time the state changes. LazyAlly does not combine calls for you.
 typedef LazyAllyPreferencesWriter =
     FutureOr<void> Function(LazyAllyPreferences cache);
 
@@ -31,11 +33,12 @@ typedef LazyAllyPreferencesWriter =
 /// persisting across app restarts: [mode], [colorBlind], [textScaleFactor],
 /// [selectedCustomScheme], [selectedCustomTheme], and [reduceMotion].
 ///
-/// LazyAlly persists nothing itself — [LazyAlly]'s `loadLazyAllyPreferences`/
-/// `onLazyAllyPreferencesChanged` hooks (see
-/// [LazyAllyPreferencesReader]/[LazyAllyPreferencesWriter]) let you
-/// read/write this however you like. [toJson]/[fromJson] are a sane default
-/// shape; read/write the fields directly if you need a different one.
+/// LazyAlly persists nothing itself. The `loadLazyAllyPreferences` and
+/// `onLazyAllyPreferencesChanged` hooks on [LazyAlly] (see
+/// [LazyAllyPreferencesReader] and [LazyAllyPreferencesWriter]) let you
+/// read and write this however you like. [toJson] and [fromJson] give a
+/// reasonable default shape. Read and write the fields directly if you
+/// need a different shape.
 ///
 /// ```dart
 /// LazyAlly(
@@ -65,11 +68,11 @@ class LazyAllyPreferences {
     required this.reduceMotion,
   });
 
-  /// Builds a [LazyAllyPreferences] from a JSON-decoded map — the counterpart to
-  /// [toJson]. Missing or malformed keys fall back to safe defaults instead
-  /// of throwing, since this typically reads back data written by a
-  /// possibly-older version of your app (or, before anything was ever
-  /// saved, an empty map).
+  /// Builds a [LazyAllyPreferences] from a JSON-decoded map. This factory
+  /// is the counterpart to [toJson]. Missing or malformed keys fall back to
+  /// safe defaults instead of throwing an error, because this factory
+  /// typically reads back data written by a possibly-older version of your
+  /// app, or, before anything was ever saved, an empty map.
   factory LazyAllyPreferences.fromJson(Map<String, dynamic> json) {
     return LazyAllyPreferences(
       mode: json['mode'] as String? ?? kLazyAllySystem,
@@ -99,9 +102,9 @@ class LazyAllyPreferences {
   /// See [LazyAllyController.reduceMotion].
   final bool reduceMotion;
 
-  /// A plain, `jsonEncode`-ready map — the default serialization shape.
-  /// Write your own instead (reading the fields directly) if you need a
-  /// different one.
+  /// A plain, `jsonEncode`-ready map. This map is the default
+  /// serialization shape. Write your own instead, by reading the fields
+  /// directly, if you need a different shape.
   Map<String, dynamic> toJson() => <String, dynamic>{
     'mode': mode,
     'colorBlind': colorBlind,

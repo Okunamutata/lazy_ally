@@ -2,18 +2,17 @@ import 'package:flutter/foundation.dart';
 
 import 'package:lazy_ally/src/lazy_ally_controller.dart';
 
-/// All the human-readable copy LazyAlly's built-in widgets use — chip
-/// labels, switch titles/subtitles, panel headings, custom-scheme/theme
-/// fallback names, and the accessibility announcements each widget sends
-/// via `lazyAllyAnnounce`.
+/// All the human-readable text that LazyAlly's built-in widgets use: chip
+/// labels, switch titles and subtitles, panel headings, custom-scheme and
+/// custom-theme fallback names, and the accessibility announcements each
+/// widget sends through `lazyAllyAnnounce`.
 ///
-/// Every LazyAlly widget defaults to `const LazyAllyLabels()` (English) but
-/// accepts a `labels: LazyAllyLabels` override, so a non-English app can
-/// supply its own copy — from `AppLocalizations`, an ARB-generated class,
-/// or anywhere else.
-/// Build one from your own localizations and
-/// pass it to [LazyAllyPanel] (which forwards it to every control it
-/// renders) or to an atomic widget directly:
+/// Every LazyAlly widget defaults to `const LazyAllyLabels()`, which is in
+/// English, but accepts a `labels: LazyAllyLabels` override. This lets a
+/// non-English app supply its own text, from `AppLocalizations`, an
+/// ARB-generated class, or anywhere else. Build one from your own
+/// localizations and pass it to [LazyAllyPanel], which forwards the labels
+/// to every control it renders, or pass it to an atomic widget directly:
 ///
 /// ```dart
 /// final t = AppLocalizations.of(context)!;
@@ -28,10 +27,11 @@ import 'package:lazy_ally/src/lazy_ally_controller.dart';
 /// )
 /// ```
 ///
-/// The `...Announcement`/formatter fields are optional — leave them unset
-/// and LazyAlly composes a reasonable English sentence from the (possibly
-/// already-translated) plain-string fields above them; supply one yourself
-/// if your language's word order needs more than substitution can give.
+/// The `...Announcement`/formatter fields are optional. If you leave them
+/// unset, LazyAlly composes a reasonable English sentence from the plain
+/// string fields above them, which may already be translated. Supply one
+/// yourself if your language's word order needs more than substitution can
+/// give.
 @immutable
 class LazyAllyLabels {
   const LazyAllyLabels({
@@ -65,7 +65,7 @@ class LazyAllyLabels {
   /// Chip label for [kLazyAllyDark].
   final String darkBrightness;
 
-  /// The display label for a mode value — [systemBrightness],
+  /// The display label for a mode value: [systemBrightness],
   /// [lightBrightness], or [darkBrightness].
   String brightnessLabelFor(String mode) {
     if (mode == kLazyAllySystem) return systemBrightness;
@@ -73,12 +73,12 @@ class LazyAllyLabels {
     return lightBrightness;
   }
 
-  /// Announcement sent when a brightness chip is selected. Defaults to
-  /// "$label brightness selected".
+  /// The announcement sent when a brightness chip is selected. The default
+  /// value is "$label brightness selected".
   final String Function(String label)? brightnessAnnouncement;
 
-  /// Resolves [brightnessAnnouncement], or its default, for [label] (the
-  /// already-resolved [brightnessLabelFor] result).
+  /// Resolves [brightnessAnnouncement], or its default value, for [label],
+  /// the already-resolved result of [brightnessLabelFor].
   String announceBrightness(String label) =>
       brightnessAnnouncement?.call(label) ?? '$label brightness selected';
 
@@ -88,8 +88,8 @@ class LazyAllyLabels {
   /// [LazyAllyColorBlindSwitch]'s subtitle.
   final String colorBlindSubtitle;
 
-  /// Announcement sent when color-blind mode is toggled. Defaults to
-  /// "$colorBlindTitle on"/"$colorBlindTitle off".
+  /// The announcement sent when color-blind mode is toggled. The default
+  /// value is "$colorBlindTitle on" or "$colorBlindTitle off".
   final String Function(bool value)? colorBlindAnnouncement;
 
   String announceColorBlind(bool value) =>
@@ -102,39 +102,41 @@ class LazyAllyLabels {
   /// [LazyAllyReduceMotionSwitch]'s subtitle.
   final String reduceMotionSubtitle;
 
-  /// Announcement sent when reduce-motion is toggled. Defaults to
-  /// "$reduceMotionTitle on"/"$reduceMotionTitle off".
+  /// The announcement sent when reduce-motion is toggled. The default
+  /// value is "$reduceMotionTitle on" or "$reduceMotionTitle off".
   final String Function(bool value)? reduceMotionAnnouncement;
 
   String announceReduceMotion(bool value) =>
       reduceMotionAnnouncement?.call(value) ??
       '$reduceMotionTitle ${value ? 'on' : 'off'}';
 
-  /// Both [LazyAllyTextScaleSlider]'s `semanticFormatterCallback` (read out
-  /// continuously while dragging) and its `onChangeEnd` announcement.
-  /// Defaults to "1.20 times text size" for `value == 1.2`.
+  /// This field supplies both [LazyAllyTextScaleSlider]'s
+  /// `semanticFormatterCallback`, which is read out continuously while
+  /// dragging, and its `onChangeEnd` announcement. The default value is
+  /// "1.20 times text size" for `value == 1.2`.
   final String Function(double value)? textScaleAnnouncement;
 
   String announceTextScale(double value) =>
       textScaleAnnouncement?.call(value) ??
       '${value.toStringAsFixed(2)} times text size';
 
-  /// Tooltip for the "-" step button `LazyAllyTextScaleSlider` shows in
-  /// place of the [Slider] when `reduceMotion` is on.
+  /// The tooltip for the "-" step button that `LazyAllyTextScaleSlider`
+  /// shows in place of the [Slider] when `reduceMotion` is on.
   final String decreaseTextSizeTooltip;
 
-  /// Tooltip for the "+" step button — see [decreaseTextSizeTooltip].
+  /// The tooltip for the "+" step button. See [decreaseTextSizeTooltip].
   final String increaseTextSizeTooltip;
 
   /// [LazyAllyCustomSchemeSelector]'s default `itemBuilder` label, and the
   /// name used in [announceScheme], for the leading "no scheme selected"
-  /// slot (`name == null`).
+  /// slot, where `name == null`.
   final String noSchemeSelected;
 
-  /// Announcement sent when a [LazyAllyCustomSchemeSelector] entry is
-  /// selected — fires for a custom `itemBuilder` too, not just the default
-  /// one. Defaults to "$name color scheme selected", or
-  /// "$noSchemeSelected color scheme selected" for the `null` slot.
+  /// The announcement sent when a [LazyAllyCustomSchemeSelector] entry is
+  /// selected. This announcement also fires for a custom `itemBuilder`,
+  /// not only the default one. The default value is "$name color scheme
+  /// selected", or "$noSchemeSelected color scheme selected" for the
+  /// `null` slot.
   final String Function(String? name)? schemeAnnouncement;
 
   String announceScheme(String? name) =>
@@ -142,13 +144,13 @@ class LazyAllyLabels {
       '${name ?? noSchemeSelected} color scheme selected';
 
   /// [LazyAllyCustomThemeSelector]'s default `itemBuilder` label, and the
-  /// name used in [announceTheme], for the leading "no theme selected" slot
-  /// (`name == null`).
+  /// name used in [announceTheme], for the leading "no theme selected" slot,
+  /// where `name == null`.
   final String noThemeSelected;
 
-  /// Announcement sent when a [LazyAllyCustomThemeSelector] entry is
-  /// selected. Defaults to "$name theme selected", or "$noThemeSelected
-  /// theme selected" for the `null` slot.
+  /// The announcement sent when a [LazyAllyCustomThemeSelector] entry is
+  /// selected. The default value is "$name theme selected", or
+  /// "$noThemeSelected theme selected" for the `null` slot.
   final String Function(String? name)? themeAnnouncement;
 
   String announceTheme(String? name) =>

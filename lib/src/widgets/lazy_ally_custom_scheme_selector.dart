@@ -5,21 +5,25 @@ import 'package:lazy_ally/src/domain/lazy_ally_labels.dart';
 import 'package:lazy_ally/src/lazy_ally_provider.dart';
 import 'package:lazy_ally/src/widgets/lazy_ally_registry_selector.dart';
 
-/// Builds the widget for one entry: [name] is the key from
+/// Builds the widget for one entry. [name] is the key from
 /// [LazyAllyController.customColorSchemes], or `null` for "no selection".
-/// [selected] is whether it's the current
-/// [LazyAllyController.selectedCustomScheme]. Call [onSelect] on tap.
+/// [selected] shows whether this entry is the current
+/// [LazyAllyController.selectedCustomScheme]. This function calls [onSelect]
+/// on tap.
 typedef LazyAllyCustomSchemeItemBuilder = LazyAllyRegistryItemBuilder;
 
-/// Lists [LazyAllyController.customColorSchemes] (plus a leading `null`
-/// "none" slot), each rendered via [itemBuilder] in a [Wrap].
+/// Lists [LazyAllyController.customColorSchemes], plus a leading `null`
+/// "none" slot. This widget renders each entry through [itemBuilder] in a
+/// [Wrap].
 ///
-/// Copy and styling are [itemBuilder]'s job, not this widget's. Omit it for
-/// a default [ChoiceChip] per entry (swapped for a plain button under
-/// reduce-motion). Selecting an entry always announces via
-/// `lazyAllyAnnounce`, regardless of builder.
+/// Copy and styling are the job of [itemBuilder], not of this widget. Omit
+/// [itemBuilder] to get a default [ChoiceChip] for each entry, which this
+/// widget swaps for a plain button under reduce motion. Selecting an entry
+/// always announces the change through `lazyAllyAnnounce`, regardless of
+/// the builder used.
 ///
-/// Not included in [LazyAllyPanel] — copy here is a product decision.
+/// This widget is not included in [LazyAllyPanel]. The copy here is a
+/// product decision for the calling app.
 class LazyAllyCustomSchemeSelector extends StatelessWidget {
   const LazyAllyCustomSchemeSelector({
     super.key,

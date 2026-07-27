@@ -41,7 +41,7 @@ Future<void> _saveCache(LazyAllyPreferences cache) async {
   await prefs.setString(_cacheKey, jsonEncode(cache.toJson()));
 }
 
-void main()async => runZonedGuarded(
+void main() async => runZonedGuarded(
   () async {
     WidgetsFlutterBinding.ensureInitialized();
     final LazyAllyPreferences? prefs = await getLazyAllyPreferences();

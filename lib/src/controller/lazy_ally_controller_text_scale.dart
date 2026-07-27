@@ -8,7 +8,7 @@ mixin _TextScaleMixin on ChangeNotifier {
   late double _textScaleFactor;
   bool _seededFromSystem = false;
 
-  /// Always within [textScaleMin]..[textScaleMax].
+  /// The value is always within the range [textScaleMin]..[textScaleMax].
   double get textScaleFactor => _textScaleFactor;
 
   double get textScaleMin => _textScaleMin;
@@ -22,10 +22,11 @@ mixin _TextScaleMixin on ChangeNotifier {
     notifyListeners();
   }
 
-  /// Seeds the initial text scale from the OS's own text scaler, composing
-  /// with rather than discarding it. Called once by `LazyAlly` on first
-  /// build; no-op if an explicit `textScaleDefault` was given, or already
-  /// seeded.
+  /// Seeds the initial text scale from the OS's own text scaler. This
+  /// method composes with the OS value instead of discarding it.
+  /// `LazyAlly` calls this once, on first build. This method is a no-op
+  /// if the app gave an explicit `textScaleDefault`, or if the controller
+  /// already seeded a value.
   void seedFromSystemTextScale(double systemFactor) {
     if (_seededFromSystem || _hadExplicitTextScaleDefault) return;
     _seededFromSystem = true;

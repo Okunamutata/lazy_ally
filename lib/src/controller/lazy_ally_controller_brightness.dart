@@ -5,12 +5,13 @@ mixin _BrightnessMixin on ChangeNotifier {
   late String _mode;
   Brightness _systemBrightness = Brightness.light;
 
-  /// [kLazyAllyLight], [kLazyAllyDark], or [kLazyAllySystem] (the default).
+  /// The value is [kLazyAllyLight], [kLazyAllyDark], or [kLazyAllySystem]
+  /// (the default).
   String get mode => _mode;
 
-  /// The OS's current brightness, kept in sync by `LazyAlly` on every
-  /// dependency change. Only affects [activeTheme] while [mode] is
-  /// [kLazyAllySystem].
+  /// The current brightness of the OS. `LazyAlly` keeps this value in sync
+  /// on every dependency change. This value affects [activeTheme] only
+  /// while [mode] is [kLazyAllySystem].
   Brightness get systemBrightness => _systemBrightness;
 
   void setSystemBrightness(Brightness value) {
@@ -25,7 +26,8 @@ mixin _BrightnessMixin on ChangeNotifier {
     notifyListeners();
   }
 
-  /// [systemBrightness] when [mode] is [kLazyAllySystem], else [mode] itself.
+  /// The resolved brightness is [systemBrightness] when [mode] is
+  /// [kLazyAllySystem]. Otherwise the resolved brightness is [mode] itself.
   Brightness get _resolvedBrightness {
     if (_mode == kLazyAllySystem) return _systemBrightness;
     return _mode == kLazyAllyDark ? Brightness.dark : Brightness.light;

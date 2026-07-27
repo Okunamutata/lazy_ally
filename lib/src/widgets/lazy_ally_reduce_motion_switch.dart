@@ -8,11 +8,12 @@ import 'package:lazy_ally/src/lazy_ally_provider.dart';
 /// A standard [SwitchListTile] bound to the nearest [LazyAllyProvider]'s
 /// [LazyAllyController.reduceMotion] flag.
 ///
-/// Place it anywhere below a `LazyAlly` widget. Also announces the change
-/// via [lazyAllyAnnounce] — see [LazyAllyColorBlindSwitch] for why.
+/// Place this widget anywhere below a `LazyAlly` widget. This widget also
+/// announces the change through [lazyAllyAnnounce]. See
+/// [LazyAllyColorBlindSwitch] for the reason.
 ///
-/// Title, subtitle, and the announcement all come from [labels] (English by
-/// default) — see [LazyAllyLabels] to override any of them for a
+/// The title, subtitle, and announcement all come from [labels] (English by
+/// default). See [LazyAllyLabels] to override any of these for a
 /// non-English app.
 class LazyAllyReduceMotionSwitch extends StatelessWidget {
   const LazyAllyReduceMotionSwitch({

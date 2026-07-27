@@ -4,10 +4,13 @@
 *.pyc
 *.swp
 .DS_Store
+Thumbs.db
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -16,11 +19,32 @@ migrate_working_dir/
 *.iws
 .idea/
 
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
 # Flutter/Dart/Pub related
 # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
 /pubspec.lock
 **/doc/api/
 .dart_tool/
 .flutter-plugins-dependencies
+.pub-cache/
+.pub/
 /build/
 /coverage/
+
+# Secrets/credentials — should never be committed by any maintainer.
+.env
+.env.*
+*.pem
+*.p12
+*.keystore
+*.jks
+key.properties
+local.properties
+.netrc
+
+# Claude Code local settings (per-maintainer permissions/paths, not shared config).
+.claude/settings.local.json
