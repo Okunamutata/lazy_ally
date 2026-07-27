@@ -1,5 +1,7 @@
 # Changelog
+## 1.0.3 - 2026-07-27
 
+- Small copy change in README.md 
 
 ## 1.0.2 - 2026-07-27
 
