@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 - 2026-07-27
+## 1.0.1 - 2026-07-27
 - Compressed and updated demo GIF on [README.md](README.md)
 
 ## 1.0.0 - 2026-07-27
