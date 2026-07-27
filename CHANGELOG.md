@@ -1,6 +1,9 @@
 # Changelog
 
 ## 1.0.0 - 2026-07-27
+- Compressed and updated demo GIF on [README.md](README.md)
+
+## 1.0.0 - 2026-07-27
 
 Initial stable release. Core primitives for accessible theming in stock Flutter.
 
