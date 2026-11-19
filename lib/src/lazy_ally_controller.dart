@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:lazy_ally/src/domain/lazy_ally_preferences.dart';
 import 'package:lazy_ally/src/colors/ibm_color_blind.dart';

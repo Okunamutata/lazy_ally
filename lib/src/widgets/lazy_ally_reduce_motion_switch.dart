@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:lazy_ally/src/utilities/lazy_ally_announce.dart';
 import 'package:lazy_ally/src/lazy_ally_controller.dart';

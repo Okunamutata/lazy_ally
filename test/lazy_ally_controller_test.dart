@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
@@ -20,18 +20,12 @@ void main() {
   );
 
   group('mode resolution', () {
-    test(
-      'defaults to system mode, which resolves to light by default systemBrightness',
-      () {
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-        );
-        expect(c.mode, kLazyAllySystem);
-        expect(c.systemBrightness, Brightness.light);
-        expect(c.activeTheme, light);
-      },
-    );
+    test('defaults to system mode, which resolves to light by default systemBrightness', () {
+      final LazyAllyController c = LazyAllyController(light: light, dark: dark);
+      expect(c.mode, kLazyAllySystem);
+      expect(c.systemBrightness, Brightness.light);
+      expect(c.activeTheme, light);
+    });
 
     test('setMode switches the active theme and notifies', () {
       final LazyAllyController c = LazyAllyController(
@@ -71,22 +65,16 @@ void main() {
       expect(c.activeTheme, dark);
     });
 
-    test(
-      're-resolves live: switching systemBrightness while mode stays system updates activeTheme',
-      () {
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-        );
-        expect(c.activeTheme, light);
+    test('re-resolves live: switching systemBrightness while mode stays system updates activeTheme', () {
+      final LazyAllyController c = LazyAllyController(light: light, dark: dark);
+      expect(c.activeTheme, light);
 
-        c.setSystemBrightness(Brightness.dark);
-        expect(c.activeTheme, dark);
+      c.setSystemBrightness(Brightness.dark);
+      expect(c.activeTheme, dark);
 
-        c.setSystemBrightness(Brightness.light);
-        expect(c.activeTheme, light);
-      },
-    );
+      c.setSystemBrightness(Brightness.light);
+      expect(c.activeTheme, light);
+    });
 
     test('notifies when systemBrightness changes while mode is system', () {
       final LazyAllyController c = LazyAllyController(light: light, dark: dark);
@@ -158,61 +146,52 @@ void main() {
       expect(c.activeTheme, same(light));
     });
 
-    test(
-      'activeTheme swaps in the IBM color-blind-safe light scheme by default, matched '
-      "to the active theme's own brightness",
-      () {
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-          initialColorBlind: true,
-        );
-        expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
-        expect(
-          c.activeTheme.scaffoldBackgroundColor,
-          kIbmColorBlindSchemeLight.surface,
-        );
-      },
-    );
+    test('activeTheme swaps in the IBM color-blind-safe light scheme by default, matched '
+        "to the active theme's own brightness", () {
+      final LazyAllyController c = LazyAllyController(
+        light: light,
+        dark: dark,
+        initialColorBlind: true,
+      );
+      expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeLight);
+      expect(
+        c.activeTheme.scaffoldBackgroundColor,
+        kIbmColorBlindSchemeLight.surface,
+      );
+    });
 
-    test(
-      'activeTheme swaps in the IBM color-blind-safe dark scheme when the active theme is dark',
-      () {
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-          initialMode: kLazyAllyDark,
-          initialColorBlind: true,
-        );
-        expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeDark);
-      },
-    );
+    test('activeTheme swaps in the IBM color-blind-safe dark scheme when the active theme is dark', () {
+      final LazyAllyController c = LazyAllyController(
+        light: light,
+        dark: dark,
+        initialMode: kLazyAllyDark,
+        initialColorBlind: true,
+      );
+      expect(c.activeTheme.colorScheme, kIbmColorBlindSchemeDark);
+    });
 
-    test(
-      'an explicit colorBlindScheme override replaces the IBM color-blind-safe default, '
-      'and re-resolves the correct member on mode switch',
-      () {
-        final ColorScheme customLight = ColorScheme.fromSeed(
-          seedColor: Colors.purple,
-        );
-        final ColorScheme customDark = ColorScheme.fromSeed(
-          seedColor: Colors.purple,
-          brightness: Brightness.dark,
-        );
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-          colorBlindScheme: (light: customLight, dark: customDark),
-          initialColorBlind: true,
-        );
-        expect(c.activeTheme.colorScheme, customLight);
-        expect(c.colorBlindScheme, customLight);
+    test('an explicit colorBlindScheme override replaces the IBM color-blind-safe default, '
+        'and re-resolves the correct member on mode switch', () {
+      final ColorScheme customLight = ColorScheme.fromSeed(
+        seedColor: Colors.purple,
+      );
+      final ColorScheme customDark = ColorScheme.fromSeed(
+        seedColor: Colors.purple,
+        brightness: Brightness.dark,
+      );
+      final LazyAllyController c = LazyAllyController(
+        light: light,
+        dark: dark,
+        colorBlindScheme: (light: customLight, dark: customDark),
+        initialColorBlind: true,
+      );
+      expect(c.activeTheme.colorScheme, customLight);
+      expect(c.colorBlindScheme, customLight);
 
-        c.setMode(kLazyAllyDark);
-        expect(c.colorBlindScheme, customDark);
-        expect(c.activeTheme.colorScheme, customDark);
-      },
-    );
+      c.setMode(kLazyAllyDark);
+      expect(c.colorBlindScheme, customDark);
+      expect(c.activeTheme.colorScheme, customDark);
+    });
   });
 
   group('custom color schemes override colorBlind', () {
@@ -537,20 +516,17 @@ void main() {
       expect(restored, cache);
     });
 
-    test(
-      'LazyAllyPreferences.fromJson falls back to safe defaults for missing keys',
-      () {
-        final LazyAllyPreferences cache = LazyAllyPreferences.fromJson(
-          <String, dynamic>{},
-        );
-        expect(cache.mode, kLazyAllySystem);
-        expect(cache.colorBlind, isFalse);
-        expect(cache.textScaleFactor, 1.0);
-        expect(cache.selectedCustomScheme, isNull);
-        expect(cache.selectedCustomTheme, isNull);
-        expect(cache.reduceMotion, isFalse);
-      },
-    );
+    test('LazyAllyPreferences.fromJson falls back to safe defaults for missing keys', () {
+      final LazyAllyPreferences cache = LazyAllyPreferences.fromJson(
+        <String, dynamic>{},
+      );
+      expect(cache.mode, kLazyAllySystem);
+      expect(cache.colorBlind, isFalse);
+      expect(cache.textScaleFactor, 1.0);
+      expect(cache.selectedCustomScheme, isNull);
+      expect(cache.selectedCustomTheme, isNull);
+      expect(cache.reduceMotion, isFalse);
+    });
 
     test('LazyAllyPreferences equality is structural', () {
       const LazyAllyPreferences a = LazyAllyPreferences(
@@ -625,29 +601,23 @@ void main() {
       },
     );
 
-    test(
-      'reduceMotionListenable notifies its own listeners independently of the controller',
-      () {
-        final LazyAllyController c = LazyAllyController(
-          light: light,
-          dark: dark,
-        );
-        int listenableNotified = 0;
-        int controllerNotified = 0;
-        c.reduceMotionListenable.addListener(() => listenableNotified++);
-        c.addListener(() => controllerNotified++);
+    test('reduceMotionListenable notifies its own listeners independently of the controller', () {
+      final LazyAllyController c = LazyAllyController(light: light, dark: dark);
+      int listenableNotified = 0;
+      int controllerNotified = 0;
+      c.reduceMotionListenable.addListener(() => listenableNotified++);
+      c.addListener(() => controllerNotified++);
 
-        c.setReduceMotion(true);
+      c.setReduceMotion(true);
 
-        expect(listenableNotified, 1);
-        expect(controllerNotified, 1);
+      expect(listenableNotified, 1);
+      expect(controllerNotified, 1);
 
-        // A change unrelated to reduceMotion must not fire reduceMotionListenable.
-        c.setMode(kLazyAllyDark);
-        expect(listenableNotified, 1);
-        expect(controllerNotified, 2);
-      },
-    );
+      // A change unrelated to reduceMotion must not fire reduceMotionListenable.
+      c.setMode(kLazyAllyDark);
+      expect(listenableNotified, 1);
+      expect(controllerNotified, 2);
+    });
 
     test('setReduceMotion is a no-op when unchanged', () {
       final LazyAllyController c = LazyAllyController(light: light, dark: dark);

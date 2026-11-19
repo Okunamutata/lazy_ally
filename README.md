@@ -4,17 +4,18 @@
 
 [![pub package](https://img.shields.io/pub/v/lazy_ally.svg)](https://pub.dev/packages/lazy_ally)
 [![CI](https://github.com/okunamutata/lazy_ally/actions/workflows/ci.yaml/badge.svg)](https://github.com/okunamutata/lazy_ally/actions/workflows/ci.yaml)
-[![Flutter](https://img.shields.io/badge/flutter-%3E%3D3.44.0-02569B.svg)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/flutter-%3E%3D3.47.0-02569B.svg)](https://flutter.dev)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 lazy_ally makes your Flutter app accessible with one widget. It handles system-aware theming,
-color-blind support, reduce-motion, and screen-reader announcements, using only stock Flutter.
+color-blind support, reduce-motion, and screen-reader announcements, built on the official Flutter
+`material_ui` package.
 
 ---
 
 ## Features
 
-- **Pure Flutter, zero extra dependencies.** lazy_ally uses only stock `ThemeData`, `ChangeNotifier`,
+- **Official library, zero filler.** lazy_ally uses only `material_ui` `ThemeData`, `ChangeNotifier`,
   and `InheritedNotifier`. It does not replace `MaterialApp`, bundle fonts, or add a state-management
   package.
 - **Live system theming.** lazy_ally syncs system/light/dark mode to the OS continuously, not only at
@@ -135,7 +136,7 @@ announced, and translatable, behind one button. See the full runnable version in
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:lazy_ally/lazy_ally.dart';
 
 void main() => runZonedGuarded(

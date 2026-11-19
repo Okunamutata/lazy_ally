@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:lazy_ally/src/utilities/lazy_ally_announce.dart';
 import 'package:lazy_ally/src/widgets/lazy_ally_reduced_motion_builder.dart';
@@ -11,13 +11,12 @@ import 'package:lazy_ally/src/widgets/lazy_ally_reduced_motion_builder.dart';
 /// This type is not part of the public API. [LazyAllyCustomSchemeItemBuilder]
 /// and [LazyAllyCustomThemeItemBuilder] alias this same function type under
 /// their own public, documented names.
-typedef LazyAllyRegistryItemBuilder =
-    Widget Function(
-      BuildContext context,
-      String? name,
-      bool selected,
-      VoidCallback onSelect,
-    );
+typedef LazyAllyRegistryItemBuilder = Widget Function(
+  BuildContext context,
+  String? name,
+  bool selected,
+  VoidCallback onSelect,
+);
 
 /// The shared implementation behind `LazyAllyCustomSchemeSelector` and
 /// `LazyAllyCustomThemeSelector`. Both widgets list a named registry, plus

@@ -26,8 +26,9 @@ typedef LazyAllyPreferencesReader = FutureOr<LazyAllyPreferences?> Function();
 /// debounce rapid changes. For example, dragging the text-scale slider
 /// fires this function on every step. LazyAlly calls this function each
 /// time the state changes. LazyAlly does not combine calls for you.
-typedef LazyAllyPreferencesWriter =
-    FutureOr<void> Function(LazyAllyPreferences cache);
+typedef LazyAllyPreferencesWriter = FutureOr<void> Function(
+  LazyAllyPreferences cache,
+);
 
 /// A serializable snapshot of the parts of [LazyAllyController] worth
 /// persisting across app restarts: [mode], [colorBlind], [textScaleFactor],

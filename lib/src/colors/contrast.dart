@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Returns a legible foreground color (pure white or black) for [background].
 /// This function uses [ThemeData.estimateBrightnessForColor] to pick the

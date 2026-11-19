@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:lazy_ally/src/domain/lazy_ally_preferences.dart';
 import 'package:lazy_ally/src/lazy_ally_controller.dart';
@@ -9,10 +9,10 @@ import 'package:lazy_ally/src/lazy_ally_provider.dart';
 /// This widget wraps an app, typically above [MaterialApp], and provides
 /// system, light, and dark theming. It also supports an open registry of
 /// your own named [customThemes], an independent IBM color-blind-safe
-/// flag, and text-scale limits. LazyAlly builds entirely on stock Flutter
-/// primitives: a plain [ThemeData], a [ChangeNotifier] controller, and an
-/// [InheritedNotifier] scope. LazyAlly does not replace [MaterialApp],
-/// bundle fonts, or depend on a state-management package.
+/// flag, and text-scale limits. LazyAlly builds entirely on the official
+/// Flutter `material_ui` library: a plain [ThemeData], a [ChangeNotifier]
+/// controller, and an [InheritedNotifier] scope. LazyAlly does not replace
+/// [MaterialApp], bundle fonts, or depend on a state-management package.
 ///
 /// Read the resolved theme and controls from a descendant widget through
 /// `context.lazyAllyTheme` and `context.lazyAlly`:

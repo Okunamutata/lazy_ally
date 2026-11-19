@@ -1,4 +1,12 @@
 # Changelog
+## 1.0.4 - 2026-11-19
+
+- Migrated from the deprecated in-framework `package:flutter/material.dart` to the standalone
+  `package:material_ui` package, with `dart fix --code=migrate_design_widgets`. Symbol and class
+  names are unchanged, but `ThemeData` and `ColorScheme` now come from `material_ui`. Apps that
+  still import `flutter/material.dart` can keep working through `MaterialUiCompatibilityBridge`.
+- Raised the minimum SDK floor to Dart 3.13.0 and Flutter 3.47.0, to match `material_ui`.
+
 ## 1.0.3 - 2026-07-27
 
 - Small copy change in README.md 

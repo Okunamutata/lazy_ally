@@ -1,8 +1,8 @@
 /// Wrap your app in a [LazyAlly] widget to get system, light, and dark
 /// theming. LazyAlly also supports your own named custom themes and color
 /// schemes, an independent IBM color-blind-safe flag, and text-scale
-/// limits. LazyAlly builds entirely on stock Flutter tooling (`ThemeData`,
-/// `ChangeNotifier`, `InheritedNotifier`, `BuildContext`).
+/// limits. LazyAlly builds on the official Flutter `material_ui` library
+/// (`ThemeData`, `ChangeNotifier`, `InheritedNotifier`, `BuildContext`).
 library;
 
 export 'src/colors/contrast.dart';
