@@ -1,4 +1,4 @@
-![lazy_ally banner](assets/banner.png)
+![lazy_ally banner](https://raw.githubusercontent.com/okunamutata/lazy_ally/main/assets/banner.png)
 
 # 🍊 lazy_ally
 
@@ -38,7 +38,7 @@ color-blind support, reduce-motion, and screen-reader announcements, built on th
   `onLazyAllyPreferencesChanged` hooks. A documented pattern avoids a flash on startup.
 - **Well tested.** 44 package tests and 16 example/widget tests run in CI on every push.
 
-![lazy_ally demo](assets/demo.gif)
+![lazy_ally demo](https://raw.githubusercontent.com/okunamutata/lazy_ally/main/assets/demo.gif)
 
 ---
 
@@ -74,7 +74,7 @@ to be.
 
 ```yaml
 dependencies:
-  lazy_ally: ^1.0.3
+  lazy_ally: ^1.0.5
 ```
 
 ---
@@ -311,7 +311,7 @@ the two complement each other rather than compete.
 - **General inquiries:** [lazyfruit.dev](https://lazyfruit.dev)
 - **Email:** [lazy.ally.reprise769@passmail.net](mailto:lazy.ally.reprise769@passmail.net)
 
-<img src="assets/lazyfruit-logo.png" width="20" alt="" align="absmiddle"> Maintained by **LazyFruit**, a public-interest Flutter studio.
+![LazyFruit logo](https://raw.githubusercontent.com/okunamutata/lazy_ally/main/assets/lazyfruit-logo.png) Maintained by **LazyFruit**, a public-interest Flutter studio.
 
 ---
 

@@ -1,6 +1,6 @@
 name: lazy_ally
 description: "Make your Flutter app accessible with one widget: system-aware theming, IBM color-blind-safe support, reduce-motion, and screen-reader announcements, built on the official Flutter material_ui package."
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/okunamutata/lazy_ally
 repository: https://github.com/okunamutata/lazy_ally
 issue_tracker: https://github.com/okunamutata/lazy_ally/issues

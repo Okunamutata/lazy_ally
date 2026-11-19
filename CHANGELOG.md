@@ -1,4 +1,10 @@
 # Changelog
+## 1.0.5 - 2026-11-19
+
+- README: switch the banner, demo GIF, and maintainer logo to absolute GitHub URLs. pub.dev drops
+  relative-path images from the rendered README, so they show as alt text only. GitHub rendering is
+  unchanged. Also refresh the install snippet to `^1.0.5`.
+
 ## 1.0.4 - 2026-11-19
 
 - Migrated from the deprecated in-framework `package:flutter/material.dart` to the standalone
